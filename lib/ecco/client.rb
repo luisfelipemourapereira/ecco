@@ -33,10 +33,13 @@ module Ecco
     end
 
     java_import com.github.shyiko.mysql.binlog.BinaryLogClient
+    java_import com.github.shyiko.mysql.binlog.network.SSLMode
     java_import java.io.IOException
 
-    def initialize(hostname: "localhost", port: 3306, username:, password:)
+    attr_accessor :hostname, :port, :username
+    def initialize(ssl_mode: :DISABLED, hostname: "localhost", port: 3306, username:, password:)
       @client = BinaryLogClient.new(hostname, port, username, password)
+      @client.set_ssl_mode(SSLMode.value_of(ssl_mode.to_s.upcase.to_sym))
 
       @row_event_listener  = RowEventListener.new(self)
       @client.register_event_listener(@row_event_listener)
@@ -58,6 +61,10 @@ module Ecco
 
     def on_communication_failure(&block)
       @lifecycle_failure_listener.callback = block
+    end
+
+    def client
+      @client ||= BinaryLogClient.new(hostname, port, username, password)
     end
 
     def start
