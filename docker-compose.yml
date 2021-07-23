@@ -1,0 +1,14 @@
+# https://docs.docker.com/compose/extends/#adding-and-overriding-configuration
+
+version: "3.7"
+
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - ./docker/ecco-my.cnf:/etc/mysql/conf.d/ecco-my.cnf
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: ecco_test
