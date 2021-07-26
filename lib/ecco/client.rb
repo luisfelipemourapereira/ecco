@@ -1,11 +1,12 @@
 require "ext/mysql-binlog-connector-java-#{Ecco::MYSQL_BINLOG_CONNECTOR_VERSION}.jar"
-require "ecco/row_event_listener"
-require "ecco/save_event_listener"
-require "ecco/lifecycle_failure_listener"
-require "ecco/error"
-require "forwardable"
+require 'ecco/row_event_listener'
+require 'ecco/save_event_listener'
+require 'ecco/lifecycle_failure_listener'
+require 'ecco/error'
+require 'forwardable'
 
 module Ecco
+  # Ecco::Client
   class Client
     DEFAULT_CONNECT_TIMEOUT = 3000 # ms
 
@@ -20,14 +21,14 @@ module Ecco
 
     def get_keep_alive_connect_timeout
       warn "[DEPRECATION] `#{__method__}` is deprecated. "\
-           "Please use `get_connect_timeout` instead."
+           'Please use `get_connect_timeout` instead.'
 
       get_connect_timeout
     end
 
     def set_keep_alive_connect_timeout(timeout)
       warn "[DEPRECATION] `#{__method__}` is deprecated. "\
-           "Please use `set_connect_timeout` instead."
+           'Please use `set_connect_timeout` instead.'
 
       set_connect_timeout(timeout)
     end
@@ -37,11 +38,12 @@ module Ecco
     java_import java.io.IOException
 
     attr_accessor :hostname, :port, :username
-    def initialize(ssl_mode: :DISABLED, hostname: "localhost", port: 3306, username:, password:)
+
+    def initialize(username:, password:, ssl_mode: :DISABLED, hostname: 'localhost', port: 3306)
       @client = BinaryLogClient.new(hostname, port, username, password)
       @client.set_ssl_mode(SSLMode.value_of(ssl_mode.to_s.upcase.to_sym))
 
-      @row_event_listener  = RowEventListener.new(self)
+      @row_event_listener = RowEventListener.new(self)
       @client.register_event_listener(@row_event_listener)
 
       @save_event_listener = SaveEventListener.new(self)

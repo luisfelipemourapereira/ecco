@@ -3,6 +3,8 @@ require "ecco/row_event"
 
 module Ecco
   class RowEventListener < EventListener
+    attr_accessor :data
+
     def initialize(client)
       super(client, events_of_interest)
     end
@@ -19,6 +21,7 @@ module Ecco
         row_event.table_id = data.get_table_id
         row_event.rows     = data.rows
         row_event.type     = event_type_to_string(type)
+        row_event.data     = data
 
         if @table_map_event
           table_event_data = @table_map_event.get_data
