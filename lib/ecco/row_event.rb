@@ -1,3 +1,10 @@
 module Ecco
-  RowEvent = Struct.new(:type, :table_id, :database, :table, :rows)
+  RowEvent = Struct.new *%i[
+    database
+    table_id
+    table
+    type
+    rows
+    data
+  ]
 end
