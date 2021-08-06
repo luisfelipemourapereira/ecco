@@ -39,7 +39,12 @@ def jar(name, **opts)
   end
 end
 
-jar 'mysql-binlog-connector-java',
-    git: 'git@github.com:luisfelipemourapereira/mysql-binlog-connector-java.git',
+# jar 'mysql-binlog-connector-java',
+#     git: 'git@github.com:luisfelipemourapereira/mysql-binlog-connector-java.git',
+#     build: 'mvn clean package',
+#     version: '0.25.2'
+
+jar 'ddl-parser',
+    git: 'git@github.com:luisfelipemourapereira/ddl-parser.git',
     build: 'mvn clean package',
-    version: '0.25.2'
+    version: '1.0-SNAPSHOT'
